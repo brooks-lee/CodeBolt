@@ -29,7 +29,7 @@ The section "Introduction to Data Structures" gives the users a basic understand
 
 The difference between stack and queue is taught by comparing them with the example of a daily life example. Users are supposed to drag and drop the students to the gate of the school in such a way that Alex can come out first. A student when dragged upon the gate goes and occupies the first available seat from the last. In case of Stack, students can go and come out of the bus only from the front door. This means that Alex should be dragged and dropped at last. However in the case of Queue, students get inside from the front gate and come out from the back gate. Therefore to come out Alex should be dragged and dropped first.
 
- ![Bus Queue Game](attachmentsForReadMe/BusQueue.png "" )
+ ![Bus Queue Game](attachmentsForReadMe/BusQueue.PNG "" )
  
  
  The project is developed using Web2py web development framework. PhaserJS and jQuery too has been used. The Project Folder is present in the repository and all the basic files can be checked here for reference. If one wishes to extend or take reference from the work, install app.w2p from here as application name: 'app' (since there are a few dependencies on the name which can be checked).
