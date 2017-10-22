@@ -1,7 +1,7 @@
 # CodeBolt
 Codebolt is an extended work of the project made by our team 'The Divergents' (comprising of 2 members) in the ACM Game Hackers hackathon hosted by IIIT Sri City on Oct 2016. We had won the special mention prize.       
 
-Our idea was to develop a web platform to teach the users the basics of computer science, from basic computers to basic programming and data structures. In the hackathon, we developed a few games that taught users the basics of Data structures with the help of music and common daily life examples. We later extended our work and developed a web platform to teach users basic computer system as well as basic programming.
+Our idea was to develop a website to teach the users the basics of computer science, from basic computers to basic programming and data structures. In the hackathon, we developed a few games that taught users the basics of Data structures with the help of music and common daily life examples. We later extended our work and developed more games to teach users basic computer system as well as basic programming.
 
 ## Let's have a look at some of those games.
 
