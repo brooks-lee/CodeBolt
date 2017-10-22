@@ -3,8 +3,6 @@ Codebolt is an extended work of the project made by our team 'The Divergents' (c
 
 Our idea was to develop a web platform to teach the users the basics of computer science, from basic computers to basic programming and data structures. In the hackathon, we developed a few games that taught users the basics of Data structures with the help of music and common daily life examples. We later extended our work and developed a web platform to teach users basic computer system as well as basic programming.
 
-Link to Codebolt: https://codebolt.pythonanywhere.com/app 
-
 ## Let's have a look at some of those games.
 
 ![Hide and Seek Game](attachmentsForReadMe/HideAndSeek.PNG "" )
