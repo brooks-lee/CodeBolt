@@ -7,25 +7,25 @@ Link to Codebolt: https://codebolt.pythonanywhere.com/app
 
 ## Let's have a look at some of those games.
 
-![Hide and Seek Game](attachmentsForReadMe/HideAndSeek.png "" )
+![Hide and Seek Game](attachmentsForReadMe/HideAndSeek.PNG "" )
 
 One of the games for teaching users about the basics computer system is "Hide and Seek" where the users are supposed to click and catch all and only the computer parts where all the things are jumbled and keep on changing their position. Clicking on a non computer part results in error amd the exercise needs to be repeated while clicking on a computer part makes it disappear.
 The other exercise in the same section helps the user understand about male port, female port and usb port.
 
-![Jerry and Butter Game](attachmentsForReadMe/JerryAndButter.png "" )
+![Jerry and Butter Game](attachmentsForReadMe/JerryAndButter.PNG "" )
 
  The section "Introduction to Coding" gives the users their first experience on coding. The first game asks them to write a few lines of instructions (from given instructions) to help Jerry reach to get the butter.
  
- ![Candy Swap Game](attachmentsForReadMe/CandySwap.png "" )
+ ![Candy Swap Game](attachmentsForReadMe/CandySwap.PNG "" )
  
  The second game introduces one of the popular concept of programming: 'Swapping variables'. Users are expected to write a few instructions (from stated instructions) to help Candy Cane reach topmost left by swapping position with nearby candies.
  
- ![Tabla Notes Game](attachmentsForReadMe/TablaNotes.png "" )
+ ![Tabla Notes Game](attachmentsForReadMe/TablaNotes.PNG "" )
  
  
 The section "Introduction to Data Structures" gives the users a basic understanding on how some popular data structures work. For example difference between array and linked list is taught by comparing them with the example of tabla notes (music included to make it more interactive). When Tabla notes are stored in an array, accessing any index plays Tabla note on that index. But accessing an index in a linked-list plays every Tabla note from first index to the required index.
 
- ![Bus Stack Game](attachmentsForReadMe/BusStack.png "" )
+ ![Bus Stack Game](attachmentsForReadMe/BusStack.PNG "" )
 
 The difference between stack and queue is taught by comparing them with the example of a daily life example. Users are supposed to drag and drop the students to the gate of the school in such a way that Alex can come out first. A student when dragged upon the gate goes and occupies the first available seat from the last. In case of Stack, students can go and come out of the bus only from the front door. This means that Alex should be dragged and dropped at last. However in the case of Queue, students get inside from the front gate and come out from the back gate. Therefore to come out Alex should be dragged and dropped first.
 
