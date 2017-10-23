@@ -30,4 +30,4 @@ The difference between stack and queue is taught by comparing them with the exam
  ![Bus Queue Game](attachmentsForReadMe/BusQueue.PNG "" )
  
  
- The project is developed using Web2py web development framework. PhaserJS and jQuery too has been used. The Project Folder is present in the repository and all the basic files can be checked here for reference. If one wishes to extend or take reference from the work, install app.w2p from here as application name: 'app' (since there are a few dependencies on the name which can be checked).
+ The project is developed using Web2py web development framework 2.14.6. PhaserJS and jQuery too has been used. The Project Folder is present in the repository and all the basic files can be checked here for reference. If one wishes to extend or take reference from the work, install app.w2p from here as application name: 'app' (since there are a few dependencies on the name which can be checked).
