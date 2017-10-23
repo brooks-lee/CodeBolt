@@ -1,0 +1,451 @@
+{{extend 'layout.html'}}
+<head>
+  <script src="{{=URL('static','js/jquery-ui.js')}}"></script>
+ <script src="{{=URL('static','js/jquery-ui.js')}}"></script>
+  <script src="{{=URL('static','js/phaser.min.js')}}"></script>
+    <style type="text/css">
+        body {
+            
+            background-color:white;
+        }
+      
+    </style>
+</head>
+<body>
+    
+
+
+
+
+    <table>
+    <tr>
+    <td >
+        <div>
+            <h2 style="color:red;font-size:18px">
+                Instructions
+            </h2><p style="color:blue;font-size:16px">
+            Swapping is an important aspect of programming.The act of swapping two variables refers to mutually exchanging the values of the variables.</br>Example:</br>var a=10;</br>var b=20;</br>swap(a,b);</br>Now,a=20 and b=10
+            </p>
+            
+        </div>
+</td>
+<td><h2 style="color:green;font-size:16px">
+            <b>Task:</b>Swap the candy cane with the candies to place the cane at the left-topmost position.</br>
+    <br>
+        Commands to use:</br>
+cane.swap('left')</br>cane.swap('right')</br>cane.swap('up')</br>cane.swap('down')</br>
+</h2></td>
+<tr><td>
+    <div id="game" style="cellpadding:2px;"></div>
+    </td>
+    <td >
+        
+    <textarea id="code" rows="20" cols="50" style="border: solid 1px black;cellpadding:2px"></textarea>    </br>
+    <button onclick="run()" float="right">RUN CODE</button>
+    </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+var arr=[],status=1;
+var index=0;
+
+function run(){
+    var x= document.getElementById("code").value;
+    arr=x.split('\n');
+    console.log(document.getElementById("code").value);
+    console.log(arr);
+    status=0;
+    
+}
+
+
+
+var game=new Phaser.Game(600,600,Phaser.AUTO,'game',{ preload:preload,create:create,update:update,render:render });
+
+function preload(){
+	
+	game.load.image('candy_blue','{{=URL('static','swap/bean_blue.png')}}');
+	game.load.image('candy_green','{{=URL('static','swap/bean_green.png')}}');
+	game.load.image('candy_orange','{{=URL('static','swap/bean_orange.png')}}');
+	game.load.image('candy_pink','{{=URL('static','swap/bean_pink.png')}}');
+	game.load.image('candy_yellow','{{=URL('static','swap/bean_yellow.png')}}');
+	game.load.image('candy_cane','{{=URL('static','swap/candycane.png')}}');
+
+}
+
+var candies;
+var cane;
+var canepos;
+var selectedCandy = null;
+var selectedCandyStartPos;
+var selectedCandyTween;
+var tempShiftedCandy = null;
+var targetCandy=null;
+var allowInput;
+var temp1_x;
+var temp2_x;
+var temp1_y;
+var temp2_y;
+var cane_x;
+var cane_y;
+function create(){
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.stage.backgroundColor = '#ffffff';
+    cane_x=2;
+    cane_y=2;
+	fillBoard();
+    
+    
+    allowInput=true;
+    
+    //game.input.addMoveCallback(slideCandy, this);
+
+}
+
+function fillBoard(){
+	candies=game.add.group();
+
+	var canepos_x=cane_x;
+    var canepos_y=cane_y;
+	
+	cane=candies.create(canepos_x*85,canepos_y*85,'candy_cane');
+	cane.name='cane'+canepos_x.toString()+'x'+canepos_y.toString();
+	cane.posX=canepos_x;
+	cane.posY=canepos_y;
+	cane.id=canepos_x+canepos_y*5;
+    game.physics.arcade.enable(cane);
+    cane.body.immovable=true;
+	//cane.inputEnabled=true;
+    //cane.input.enableDrag();
+    //cane.events.onDragStart.add(selectCandy,this);
+	//cane.events.onDragStop.add(releaseCandy, this);
+    cane.events.onInputDown.add(display,this);
+
+	var temp;
+	for(var i=0;i<5;i++)
+	{
+		for(var j=0;j<5;j++)
+		{
+			if(i!==canepos_x || j!==canepos_y)
+			{	
+				var num=game.rnd.integerInRange(1,5);
+				temp="";
+				switch(num)
+				{
+					case 1:
+							temp="candy_blue";
+							break;
+					case 2:
+							temp="candy_green";
+							break;
+					case 3:
+							temp="candy_orange";
+							break;
+					case 4:
+							temp="candy_pink";
+							break;
+					default:
+							temp="candy_yellow";
+				}
+				var candy=candies.create(i*85,j*85,temp);
+				candy.name='candy'+i.toString()+'x'+j.toString();
+                game.physics.arcade.enable(candy);
+                candy.body.immovable=true;
+				//candy.inputEnabled=true;
+                //candy.input.enableDrag();
+                //candy.events.onInputDown.add(display,this);
+				//candy.events.onDragStart.add(selectCandy,this);
+				//candy.events.onDragStop.add(releaseCandy, this);
+				setCandyPos(candy, i, j); // each Candy has a position on the board
+
+			}
+			
+		}
+	}
+	
+}
+
+
+
+
+function ifmove(from_x,from_y,to_x,to_y){
+    if (( to_x<0 || to_x>4) ||(to_y<0 || to_y>4))
+    {
+        return false;
+    }
+    else if((to_x>=from_x+2 || to_x<=from_x-2 )||( to_y>=from_y+2 || to_y<=from_y-2))
+    {
+        return false;
+    }
+    else if((from_x+1==to_x || from_x-1==to_x) &&(from_y+1==to_y || from_y-1==to_y))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+function selectCandy(Candy) {
+
+    selectedCandy=Candy;
+    Candy.body.moves=false;
+    Candy.body.immovable=false;
+}
+function setCandyPos(Candy, posX, posY) {
+
+    Candy.posX = posX;
+    Candy.posY = posY;
+    Candy.id = calcCandyId(posX, posY);
+
+}
+function display()
+{
+    var x=getCandyPos(game.input.x);
+    var y=getCandyPos(game.input.y);
+    //window.alert("position "+x+" "+y);
+}
+
+function calcCandyId(posX, posY) {
+
+    return posX + posY * 5;
+
+}
+
+function getCandyPos(coordinate)
+{
+    return Math.floor(coordinate / 85);
+
+}
+
+function releaseCandy() {
+
+    
+    targetCandy=getCandy(Math.floor(game.input.x/85),Math.floor(game.input.y/85));
+    //window.alert(Math.floor(game.input.x/85)+" "+Math.floor(game.input.y/85));
+ 
+    if(selectedCandy!== null && targetCandy!==null)
+    {
+        //game.physics.arcade.overlap(candies, candies, swapCandy, null, this);
+        swapCandy(selectedCandy,targetCandy);
+        //sprite.body.moves=true;
+    }
+}
+
+function getCandy(posX, posY) {
+
+    return candies.iterate("id", calcCandyId(posX, posY), Phaser.Group.RETURN_CHILD);
+
+}
+
+function swapPos(candy1,candy2){
+     var temp_x=candy1.posX;
+     var temp_y=candy1.posY;
+           
+    candy1.posX=candy2.posX;
+    candy1.posY=candy2.posY;
+    candy1.id=candy2.posX+candy2.posY*5;
+
+    candy2.posX=temp_x;
+    candy2.posY=temp_y;
+    candy2.id=temp_x+temp_y*5;
+}
+
+function swapCandy(candy1,candy2){
+    //temp1_x=candy1.posX;
+    //temp1_y=candy1.posY;
+    //temp2_x=candy2.posX;
+    //temp2_y=candy2.posY;
+
+    if (ifmove(temp1_x,temp1_y,temp2_x,temp2_y))
+    {
+
+        if (candy1.id!==candy2.id)
+        {
+       
+            //window.alert("id1:"+candy1.id+" "+temp1_x+" "+temp1_y+"\nid2:"+candy2.id+" "+temp2_x+" "+temp2_y);
+            //window.alert("print again");
+            candy2.body.immovable=false;
+            var tween=game.add.tween(candy1).to({x: candy2.posX*85 , y: candy2.posY *85 }, 500, Phaser.Easing.Linear.None, true);
+            game.add.tween(candy2).to({x:candy1.posX *85 , y:candy1.posY *85 },500, Phaser.Easing.Linear.None, true);
+            tween.onComplete.add(update_index,this);
+            
+            swapPos(candy1,candy2);
+            //window.alert("after swap\n"+"id1:"+candy1.id+" "+temp1_x+" "+temp1_y+"\nid2:"+candy2.id+" "+temp2_x+" "+temp2_y);
+
+
+        }
+    }
+    else
+    {
+        // window.alert("id1:"+candy1.id+" "+temp1_x+" "+temp1_y+"\nid2:"+candy2.id+" "+temp2_x+" "+temp2_y);
+        window.alert("not allowed");
+
+        var tween=game.add.tween(candy1).to({x: candy1.posX*85 , y: candy1.posY *85 }, 500, Phaser.Easing.Linear.None, true);
+        tween.onComplete.add(update_index,this);
+        
+    }
+    
+    temp1_x=cane.posX;
+    temp1_y=cane.posY;
+    temp2_x=undefined;
+    temp2_y=undefined;
+}
+
+function update_index(candy){
+    if(index>=arr.length)
+    {
+        if(cane.posX!==0 || cane.posY!==0)
+        {
+            window.alert("You haven't reached the destination.Try again.");
+            status=-1;
+            index=0;
+            game.world.removeAll();
+            fillBoard();
+        }
+        else
+        {
+            
+            window.alert("Congratulations!You have learnt swapping.");
+            ajax('{{=URL('itocoding', 'levelsuccess', args=["2"])}}', [], ':eval');
+        }
+    }    
+
+    else
+        status=0;
+
+}
+function update(){
+    
+	if(index<arr.length && status==0 )
+{
+    console.log("inside if");
+    console.log("index: "+index);
+    var candy1,candy2;
+    temp1_x=cane.posX;
+    temp1_y=cane.posY;
+    
+    switch(arr[index]){
+        case "cane.swap('left')":
+                            {
+                            
+                            temp2_x=temp1_x-1;
+                            temp2_y=temp1_y;
+                            candy1=getCandy(temp1_x,temp1_y);
+                            candy2=getCandy(temp2_x,temp2_y);
+                            console.log(candy1,candy2);
+                            console.log("inside case");
+                            if(candy2==null)
+                            {
+                                window.alert('wrong swap');
+                                index=arr.length;
+                                update_index();
+                                break;
+                            }
+                            swapCandy(candy1,candy2);
+                           
+                            index++;
+                            status=1;
+                            break;
+                        }
+        case "cane.swap('right')":
+                            {
+                            
+                            temp2_x=temp1_x+1;
+                            temp2_y=temp1_y;
+                            candy1=getCandy(temp1_x,temp1_y);
+                            candy2=getCandy(temp2_x,temp2_y);
+                            console.log(candy1,candy2);
+                            console.log("inside case");
+                            if(candy2==null)
+                            {
+                                window.alert('wrong swap');
+                                index=arr.length;
+                                update_index();
+                                break;
+                            }
+                            
+                             swapCandy(candy1,candy2);
+                             
+                            index++;
+                            status=1;
+                            break;
+                        }
+        case "cane.swap('down')":
+                            {
+                            
+                            temp2_x=temp1_x;
+                            temp2_y=temp1_y+1;
+                            candy1=getCandy(temp1_x,temp1_y);
+                            candy2=getCandy(temp2_x,temp2_y);
+                            console.log(candy1,candy2);
+                            console.log("inside case");
+                            if(candy2==null)
+                            {
+                                window.alert('wrong swap');
+                                index=arr.length;
+                                update_index();
+                                break;
+                            }
+                            
+                            swapCandy(candy1,candy2);
+                            
+                            index++;
+                            status=1;
+                            break;
+                        }
+        case "cane.swap('up')":
+                            {
+                            
+                            temp2_x=temp1_x;
+                            temp2_y=temp1_y-1;
+                            candy1=getCandy(temp1_x,temp1_y);
+                            candy2=getCandy(temp2_x,temp2_y);
+                            console.log(candy1,candy2);
+                            console.log("inside case");
+                            if(candy2==null)
+                            {
+                                window.alert('wrong swap');
+                                index=arr.length;
+                                update_index();
+                                break;
+                            }
+                            
+                            swapCandy(candy1,candy2);
+                            
+                            index++;
+                            status=1;
+                            break;  
+                        }
+        default:  
+                        {    if(arr[index]!=="")
+                            {
+                                window.alert("Your code has undefined statements.Please check for blank lines and undefined commands!");
+                               index=arr.length;
+                               update_index();
+                            }
+                        else{
+                                index++;
+                                status=1;
+                                update_index();
+
+                            }
+                        }
+
+            }
+}
+}
+    
+
+
+function render(){
+	//game.debug.text(cane_x+" "+cane_y,5,15);
+    //game.debug.text("temp1_x:"+temp1_x+" "+"temp1_y:"+temp1_y+"\n"+"temp2_x:"+temp2_x+" "+"temp2_y:"+temp2_y,10,25);
+
+
+}
+</script>
+</body>
+</html>

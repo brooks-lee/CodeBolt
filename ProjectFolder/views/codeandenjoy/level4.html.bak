@@ -1,0 +1,245 @@
+{{extend 'layout.html'}}
+<head>
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+
+	.droppable { 
+   position: relative;  
+        background-image:url("{{=URL('static','images/boys/cloud1.jpg')}}");
+   background-repeat:no-repeat;
+  
+}
+
+h2 { 
+   position: absolute; 
+   
+   width: 100%; 
+}
+.draggable
+{
+width: 70px;
+height: 130px;
+}
+.final
+{
+
+visibility = 'hidden';
+}
+.info
+        {
+            margin-left:auto;
+        margin-right: auto;
+        display:block;
+        }
+    </style>
+</head>
+<body >
+ <h1 style="text-align:center">
+         STACKS
+      </h1>
+    <p>
+        Stack is Data Structure used to store the data in such a way that element inserted into the stack will be removed at last. Stack is first in last out Structure (LIFO) Structure.
+        <br>We push datas to the top as well as pop also the datas from the top.
+        <br>
+        PUSH:
+    </p>
+    <img class="info" src="{{=URL('static','images/ds/push.gif')}}" alt="" />
+    <br>
+    <p>
+        POP:
+    </p>
+    <img class="info" src="{{=URL('static','images/ds/pop.gif')}}" alt="" />
+    <br>
+    <p>
+        TASK: Alex and his friends are waiting for school bus to go to school from their hostel. 
+        <br>
+        The one who enters first goes and occupies the last unoccupied seat near the window.
+        <br>
+        When the bus reaches the school the one at front comes out first.
+        <br>
+        Help Alex come out first as he wants to go early to his classroom and sit on the first bench in the class.
+        <br>
+        Drag the students to the gate of the bus one by one accordingly.
+        <br>
+        NOTE: all students have their roll no.s written on their tshirt and Alex is dressed in black with roll no. 4.
+    </p>
+<div class="droppable" id="changeit"  >
+<br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    
+      <img src="{{=URL('static','images/boys/bus.png')}}" alt="" />
+
+       <h2 style="top:250px;color:black;left:210px;" id="0">-</h2>
+       <h2 style="top:310px;color:black;left:280px" id="1">-</h2>
+       <h2 style="top:310px;color:black;left:350px" id="2">-</h2>
+       <h2 style="top:310px;color:black;left:420px" id="3">-</h2>
+       <h2 style="top:310px;color:black;left:480px" id="4">-</h2>
+       <h2 style="top:310px;color:black;left:550px" id="5">-</h2>
+       <h2 style="top:310px;color:black;left:620px" id="6">-</h2>
+       <h2 style="top:310px;color:black;left:685px" id="7">-</h2>
+       <h2 style="top:310px;color:black;left:750px" id="8">-</h2>
+       <h2 style="top:310px;color:black;left:820px" id="9">-</h2>
+<!--<img src="{{=URL('static','images/boys/hostel.jpg')}}" id="place" style="width:150px; height: 500px"> -->
+</div>
+<br>
+
+<img class="draggable" id="s0" src="{{=URL('static','images/boys/boy1.jpg')}}">
+<img class="draggable" id="s1" src="{{=URL('static','images/boys/boy2.jpg')}}">
+<img class="draggable" id="s2" src="{{=URL('static','images/boys/boy3.jpg')}}">
+<img class="draggable" id="s3" src="{{=URL('static','images/boys/you.jpg')}}">
+<img class="draggable" id="s4" src="{{=URL('static','images/boys/boy5.jpg')}}">
+<img class="draggable" id="s5" src="{{=URL('static','images/boys/boy6.jpg')}}">
+<img class="draggable" id="s6" src="{{=URL('static','images/boys/boy7.jpg')}}">
+<img class="final" id="f6">
+<img class="final" id="f5">
+<img class="final" id="f4">
+<img class="final" id="f3">
+<img class="final" id="f2">
+<img class="final" id="f1">
+<img class="final" id="f0">
+     <button id="butt" style="visibility:hidden; background-color:lightblue; color:black" onclick="levelcomplete()">
+        CONGRATS! CLICK TO CONTINUE
+    </button>
+    <p id="demo">
+        
+    </p>
+<br>
+    <br>
+   
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <script type="text/javascript">
+
+
+
+var seat=[-1,-1,-1,-1,-1,-1,-1,-1,-1,0];
+var stu=["no","no","no","no","no","no","no"];
+function check(s)
+{
+	var k=seat.indexOf(0);
+	seat[k]=1;
+	var changer=parseInt(s[1])+1;
+	document.getElementById(k).innerHTML=s[0]+changer;
+	seat[k-1]=0;
+	
+	var kk=stu.indexOf("no");
+	stu[kk]=s;
+//	document.getElementById("demo2").innerHTML=stu+"  "+seat;
+	document.getElementById(s).style.visibility = 'hidden';
+	
+	return k;
+
+}
+        function levelcomplete()
+        {
+            ajax('{{=URL('codeandenjoy', 'levelsuccess', args=["4"])}}', [], ':eval');
+        }
+        
+        
+function studentsout()
+{
+
+var im0=document.getElementById(stu[0]);
+document.getElementById("f0").src=im0.src;
+document.getElementById("f0").style.visibility = 'visible';
+document.getElementById("f0").style.width="70px";
+document.getElementById("f0").style.height="130px";
+
+var im1=document.getElementById(stu[1]);
+document.getElementById("f1").src=im1.src;
+document.getElementById("f1").style.visibility = 'visible';
+document.getElementById("f1").style.width="70px";
+document.getElementById("f1").style.height="130px";
+
+
+var im2=document.getElementById(stu[2]);
+document.getElementById("f2").src=im2.src;
+document.getElementById("f2").style.visibility = 'visible';
+document.getElementById("f2").style.width="70px";
+document.getElementById("f2").style.height="130px";
+
+
+var im3=document.getElementById(stu[3]);
+document.getElementById("f3").src=im3.src;
+document.getElementById("f3").style.visibility = 'visible';
+document.getElementById("f3").style.width="70px";
+document.getElementById("f3").style.height="130px";
+
+
+var im4=document.getElementById(stu[4]);
+document.getElementById("f4").src=im4.src;
+document.getElementById("f4").style.visibility = 'visible';
+document.getElementById("f4").style.width="70px";
+document.getElementById("f4").style.height="130px";
+
+
+var im5=document.getElementById(stu[5]);
+document.getElementById("f5").src=im5.src;
+document.getElementById("f5").style.visibility = 'visible';
+document.getElementById("f5").style.width="70px";
+document.getElementById("f5").style.height="130px";
+
+
+var im6=document.getElementById(stu[6]);
+document.getElementById("f6").src=im6.src;
+document.getElementById("f6").style.visibility = 'visible';
+document.getElementById("f6").style.width="70px";
+document.getElementById("f6").style.height="130px";
+}
+$(document).ready(function() {
+  
+    $( ".draggable" ).draggable();
+      
+	  $( ".droppable" ).droppable({
+      drop: function( event, ui ) {
+	  var dragged=ui.draggable.attr("id");
+	  var newPosX = ui.offset.left - $(this).offset().left;
+        var newPosY = ui.offset.top - $(this).offset().top;
+         // document.getElementById("demo").innerHTML="CURRENT: \nLeft: " + newPosX + "\nTop: " + newPosY;
+		if((newPosX>=10 && newPosX<=150)&&(newPosY>=260 && newPosY<=410))
+		{
+	  var empty=check(dragged);
+	//  document.getElementById("demo").innerHTML=empty+dragged;
+
+       
+	  if(empty==3)
+	  {
+          if(stu[6]!="s3")
+          {
+              alert("Alex can't come out first. Read the lesson above and try again. The Game will restart now!");
+              location.reload();
+          }
+          else
+          {
+//	  document.getElementById("place").src="{{=URL('static','images/boys/school.jpg')}}";
+  //       var divv = document.getElementById( 'changeit' );
+//divv.style.background-image = url("{{=URL('static','images/boys/cloud2.jpg')}}");
+	   alert("Great! You have made all students sit in the bus in the correct way.");
+              document.getElementById("butt").style.visibility = 'visible';
+	   var k=seat.indexOf(0);
+seat[k]=-1;
+	   studentsout();
+	  }
+      }
+	  }
+	  else
+	  {
+	  alert("Please DRAG the student to the gate!");
+	  }
+		}
+		});
+  } );
+</script>
+</body>

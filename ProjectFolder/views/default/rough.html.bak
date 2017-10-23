@@ -1,0 +1,88 @@
+{{extend 'layout.html'}}
+<head>
+<style>
+  #draggable { width: 150px; height: 170px; padding: 0.5em; border: 2px solid white}
+  .droppable { width: 200px; height: 250px; padding: 0.5em; border: 2px solid white; background-image: url("{{=URL('static', 'images/home/droppable.png')}}"); background-repeat: no-repeat; background-position: center; display:inline-block; text-align:center }
+    .droppableold { width: 200px; height: 250px; padding: 0.5em; border: 2px solid green; background-image: url("{{=URL('static', 'images/home/droppableold.png')}}"); background-repeat: no-repeat; background-position: center;display:inline-block;  text-align:center }
+    .undroppable { width: 200px; height: 250px; padding: 0.5em; border: 2px solid orange; background-image: url("{{=URL('static', 'images/home/undroppable.png')}}");background-repeat: no-repeat; background-position: center;display:inline-block;  text-align:center }
+    .userdp
+    {
+        margin-left:auto;
+        margin-right: auto;
+        display:block;
+        width: 120px;
+        height: 120px;
+    }
+    body
+    {
+        background-image:url("{{=URL('static','images/background1.jpg')}}");
+    }
+    
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="jquery.ui.touch-punch.min.js"></script>
+    <script>
+  $(document).ready(function() {
+    $( "#draggable" ).draggable();
+	var x = $("#draggable").position();
+
+       $( ".droppable" ).droppable({
+      drop: function( event, ui ) {
+         if (window.confirm('Confirm to play!')){
+        window.location="/codebolt/itocomputers"+"/level"+this.id;
+     }
+    
+      }
+    });
+
+          $( ".droppableold" ).droppable({
+      drop: function( event, ui ) {
+         if (window.confirm('You\'ve played this level. Confirm to play again!')){
+        window.location="/codebolt/itocomputers"+"/level"+this.id;
+     }
+      }
+    });
+	$( ".undroppable" ).droppable({
+		drop: function( event, ui ) 
+		{
+			alert("This is a level higher than your present level. Please finish your present level first. ");
+           
+		}
+});
+  
+  
+   
+});
+
+  </script>
+
+</head>
+<body>
+    <h1 style="text-align:center">
+        INTRODUCTION TO COMPUTERS
+    </h1>
+    <h2 style="text-align:left">
+        DRAG YOURSELF TO THE LEVEL YOU WISH TO PLAY!
+    </h2>
+    {{for level in range(1,levels+1):}}
+    {{if useract.playing1 +1 > level:}}
+<div class="droppableold" id="{{=level}}"><p>COMPLETED LEVEL {{=level}}</p></div>
+{{elif useract.playing1 +1== level:}}
+<div class="droppable" id="{{=level}}"><p>PLAY LEVEL {{=level}}</p></div>
+    {{else:}}
+<div class="undroppable" ><p>LEVEL {{=level}}</p></div>
+     {{pass}}
+
+{{pass}}
+<div id="draggable">
+  <p>Drag me around</p>
+    {{if point.id>0:}}
+{{if point.dp:}}
+<img class="userdp" src="{{=(URL('default','download',args=point.dp))}}"/>
+{{pass}}
+{{else:}}
+<img class="userdp" src="{{=(URL('static','images/defaultdp.png'))}}"/>
+{{pass}}
+</div>
+</body>

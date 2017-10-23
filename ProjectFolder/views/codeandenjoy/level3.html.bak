@@ -1,0 +1,303 @@
+{{extend 'layout.html'}}
+<head>
+<script src="{{=URL('static','js/phaser.js')}}"></script>
+    <script src="{{=URL('static','js/jquery.js')}}"></script>
+    <script src="{{=URL('static','js/jquery-ui.js')}}"></script>
+</head>
+  <body>
+       <h1 style="text-align:center">
+          LINKED LIST and TRAVERSING IN A LINKED LIST
+      </h1>
+      <div id="gamearea" style="display:inline-block">
+          
+      </div>
+      <div style="display:inline-block;width:300px; height:200px;border: 2px solid orange; background-color:pink;display:inline-block;color:black">
+      <p>
+          TABLA NOTES:
+          <br>
+          1: Hard Tabla Closed Open Ge
+          <br>
+          2: Hard Tabla Loud Ge
+          <br>
+          3: Hard Tabla Open Ge
+          <br>
+          4: Hard Tabla Open Na
+          <br>
+          5: Hard Tabla Pressed Ge
+          <br>
+          6: Hard Tabla Sliding Ge
+          <br>
+          7: Hard Tabla Softer Sur
+          <br>
+          8: Hard Tabla Thap
+          </p>
+      </div>
+       <p>
+           A linked list is <span style="color:orange"> one of the most powerful of all data structures</span> in the sense that you <span style="color:orange"> can use it to create just about any other data structure</span>.
+           <br>
+           Linked list are of basically <span style="color:orange"> three types i.e  singly, doubly and circular linked list </span>. In this exercise we will learn about singly linked list.
+           <br>
+           A linked list is like an array as you can store multiple values here too but it has a lot of differences.
+           <br>
+           Size of array has an upper bound. Linked list consist of nodes where a node consists of two variables. One is a data and the another variable stores the address of the next node, such that one node points to the next node, and the next node points to its next node. The last node points to null.
+      <br>
+           <img src="{{=URL('static', 'images/circles/linkedlist.bmp')}}"/>
+           <br><span style="color:orange">TASK: </span>
+           Here you have been given a linked list object in which whatever you <span style="color:orange">"insert"</span> gets inserted as the last node.
+           Unlike array, if you want to get the fourth element in the linked list you will have to traverse from beginning node and go to each next node 
+           until you reach the desired one. Fill the first four blanks to insert a data between 1 to 8 which corresponds to a tabla note. Fill the last
+           blank to traverse upto that index.
+      </p>
+       <div style="background-color: grey; padding: 4px; width: 350px">
+          <p>
+      var myvar=new linkedlist();
+       <br>
+              myvar.insert(4);
+              <br>
+              myvar.insert([<input type="text" id="textareaID1" size="2" />]);
+              <br>
+              myvar.insert([<input type="text" id="textareaID2" size="2" />]);
+              <br>
+              myvar.insert([<input type="text" id="textareaID3" size="2" />]);
+              <br>
+              myvar.insert([<input type="text" id="textareaID4" size="2" />]);
+              <br>
+              myvar.insert(2);
+              <br>
+              var element= getelementatindex(myvar,<input type="text" id="textareaID5" size="2" />)
+      </p>
+      </div>
+      <br>
+<button onclick="printt()" style="background-color: grey; color:black">CLICK ME</button> 
+      <p id="demo">
+         
+      </p>
+      <p id="demo2">
+         
+      </p>
+      <p id="demo3">
+         
+      </p>
+      <p id="demo4">
+         
+      </p>
+  <script>
+
+window.PhaserGlobal = { disableWebAudio: true };
+
+var game = new Phaser.Game(800, 400, Phaser.CANVAS, 'gamearea', { preload: preload, create: create, update: update });
+
+function preload() {
+
+
+    //  Firefox doesn't support mp3 files, so use ogg
+    game.load.audio('music1', "{{=URL('static','music/hardtabla-Closed-Open-Ge.wav')}}");
+    game.load.audio('music2', "{{=URL('static','music/hardtabla-Loud-Ge.wav')}}");
+    game.load.audio('music3', "{{=URL('static','music/hardtabla-Open-Ge.wav')}}");
+    game.load.audio('music4', "{{=URL('static','music/hardtabla-Open-Na.wav')}}");
+    game.load.audio('music5', "{{=URL('static','music/hardtabla-Pressed-Ge.wav')}}");
+    game.load.audio('music6', "{{=URL('static','music/hardtabla-Sliding-Ge.wav')}}");
+    game.load.audio('music7', "{{=URL('static','music/hardtabla-Softer-Sur.wav')}}");
+    game.load.audio('music8', "{{=URL('static','music/hardtabla-Thap.wav')}}");
+    game.load.image('disk', "{{=URL('static','images/drums.jpg')}}");
+    game.load.image('circle1', "{{=URL('static','images/circles/circle1.jpg')}}");
+    game.load.image('circle2', "{{=URL('static','images/circles/circle2.jpg')}}");
+    game.load.image('circle3', "{{=URL('static','images/circles/circle3.jpg')}}");
+    game.load.image('circle4', "{{=URL('static','images/circles/circle4.jpg')}}");
+    game.load.image('circle5', "{{=URL('static','images/circles/circle5.jpg')}}");
+    game.load.image('circle6', "{{=URL('static','images/circles/circle6.jpg')}}");
+    game.load.image('circle7', "{{=URL('static','images/circles/circle7.jpg')}}");
+    game.load.image('circle8', "{{=URL('static','images/circles/circle8.jpg')}}");
+    //  Firefox doesn't support mp3 files, so use ogg
+
+}
+var text="";
+var s;
+var tone1, tone2, tone3, tone4, tone5, tone6, tone7, tone8;
+var stick1,stick2,stick3,stick4,stick5,stick6,stick7,stick8;
+var play=1;
+var arr=[], flock=1, inn=0;
+function create() {
+
+    game.stage.backgroundColor = '#182d3b';
+    game.input.touch.preventDefault = false;
+
+    stick1= game.add.sprite(160, 320, 'circle1');
+	stick1.scale.setTo(0.4,0.4);
+    stick2= game.add.sprite(220, 320, 'circle2');
+	stick2.scale.setTo(0.4,0.4);
+    stick3= game.add.sprite(280, 320, 'circle3');
+	stick3.scale.setTo(0.4,0.4);
+    stick4= game.add.sprite(340, 320, 'circle4');
+	stick4.scale.setTo(0.4,0.4);
+    stick5= game.add.sprite(400, 320, 'circle5');
+	stick5.scale.setTo(0.4,0.4);
+    stick6= game.add.sprite(460, 320, 'circle6');
+	stick6.scale.setTo(0.4,0.4);
+    stick7= game.add.sprite(520, 320, 'circle7');
+	stick7.scale.setTo(0.4,0.4);
+    stick8= game.add.sprite(580, 320, 'circle8');
+	stick8.scale.setTo(0.4,0.4);
+    
+    
+    tone1 = game.add.audio('music1');
+    tone2 = game.add.audio('music2');
+    tone3 = game.add.audio('music3');
+    tone4 = game.add.audio('music4');
+    tone5 = game.add.audio('music5');
+    tone6 = game.add.audio('music6');
+    tone7 = game.add.audio('music7');
+    tone8 = game.add.audio('music8');
+    
+    s = game.add.sprite(game.world.centerX, game.world.centerY, 'disk');
+    s.scale.setTo(0.8,0.8);
+    s.anchor.setTo(0.5, 0.7);
+
+
+   
+    stick1.inputEnabled = true;
+    stick1.events.onInputDown.add(listener1, this);
+    stick2.inputEnabled = true;
+    stick2.events.onInputDown.add(listener2, this);
+    stick3.inputEnabled = true;
+    stick3.events.onInputDown.add(listener3, this);
+    stick4.inputEnabled = true;
+    stick4.events.onInputDown.add(listener4, this);
+    stick5.inputEnabled = true;
+    stick5.events.onInputDown.add(listener5, this);
+    stick6.inputEnabled = true;
+    stick6.events.onInputDown.add(listener6, this);
+    stick7.inputEnabled = true;
+    stick7.events.onInputDown.add(listener7, this);
+    stick8.inputEnabled = true;
+    stick8.events.onInputDown.add(listener8, this);
+    
+    
+    tone1.onStop.add(soundStopped, this);
+     tone2.onStop.add(soundStopped, this);
+     tone3.onStop.add(soundStopped, this);
+     tone4.onStop.add(soundStopped, this);
+     tone5.onStop.add(soundStopped, this);
+     tone6.onStop.add(soundStopped, this);
+     tone7.onStop.add(soundStopped, this);
+     tone8.onStop.add(soundStopped, this);
+}
+      function soundStopped()
+      {
+       inn++;
+          flock=0;
+      }
+function listener1 () {
+            tone1.play();
+}
+      function listener2() 
+      {
+          tone2.play();
+      }
+      
+      function listener3() 
+      {
+          tone3.play();
+      }
+      function listener4() 
+      {
+          tone4.play();
+      }
+      function listener5() 
+      {
+          tone5.play();
+      }
+      function listener6() 
+      {
+          tone6.play();
+      }
+       function listener7() 
+      {
+          tone7.play();
+      }
+       function listener8() 
+      {
+          tone8.play();
+      }
+
+
+function update() {
+    if(flock==0 && inn<=arr.length)
+    {
+        if(inn<arr.length)
+        {
+            flock=1;
+            aa=parseInt(arr[inn]);
+            if(aa>=1 && aa<=8)
+            {
+                temp="listener"+aa;
+                document.getElementById("demo").innerHTML ="PLAYED TABLA NOTE "+aa;
+                window[temp]();
+            }
+        }
+        else
+        {
+            document.getElementById("demo").innerHTML ="REACHED INDEX "+(inn-1);
+            flock=1;
+             alert("REACHED INDEX "+(inn-1)+ ". Congrats for completing level 3.");
+            
+              ajax('{{=URL('codeandenjoy', 'levelsuccess', args=["3"])}}', [], ':eval');
+        }
+    }
+    }
+
+function printt()
+    {
+var x1=$("#textareaID1").val();
+var x2=$("#textareaID2").val();
+var x3=$("#textareaID3").val();
+var x4=$("#textareaID4").val();
+        if((x1>=1 && x1<=8)&&(x2>=1 && x2<=8)&&(x3>=1 && x3<=8)&&(x4>=1 && x4<=8))
+        {
+            var x5=$("#textareaID5").val();
+            
+            if(x5>=0 && x5<=5 && x5!="")
+            {
+                if(x5==5)
+                {
+                arr=[4,parseInt(x1),parseInt(x2),parseInt(x3),parseInt(x4)];
+                }
+                if(x5==5)
+                {
+                arr=[4,parseInt(x1),parseInt(x2),parseInt(x3),parseInt(x4),2];
+                }
+                if(x5==4)
+                {
+                arr=[4,parseInt(x1),parseInt(x2),parseInt(x3),parseInt(x4)];
+                }
+                if(x5==3)
+                {
+                arr=[4,parseInt(x1),parseInt(x2),parseInt(x3)];
+                }
+                if(x5==2)
+                {
+                arr=[4,parseInt(x1),parseInt(x2)];
+                }
+                if(x5==1)
+                {
+                arr=[4,parseInt(x1)];
+                }
+                if(x5==0)
+                {
+                arr=[4];
+                }
+                    document.getElementById("demo").innerHTML =arr;
+                inn= flock=0;
+            }
+            else
+            {
+                alert("Since there are 6 elements pushed index can range from 0 to 5. Try again");
+            }
+        }
+        else
+        {
+         alert("Either of the insert values are not between 1 to 8");   
+        }
+    }
+      </script>
+</body>

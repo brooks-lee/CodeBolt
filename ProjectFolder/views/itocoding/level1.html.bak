@@ -1,0 +1,262 @@
+{{extend 'layout.html'}}
+<head>
+<script src="{{=URL('static','js/jquery.js')}}"></script>
+  <script src="{{=URL('static','js/jquery-ui.js')}}"></script>
+<style>
+#gamearea
+{
+    border: 2px solid white;
+	display:inline-block;
+}
+#textbox
+{
+	float:right;
+	display:inline-block;
+	border: 2px solid white;
+    color:black;
+}
+#clickme
+    {
+        color:white;
+        background-color: black;
+        border: 1px solid white;
+    }
+</style>
+<script src="{{=URL('static','js/phaser.min.js')}}"></script>
+<style>
+body
+{
+    background-image:url("{{=URL('static','images/background1.jpg')}}");
+	color: black;
+}
+</style>
+</head>
+<body>
+<h1 style="text-align: center; color:white">
+  
+    </h1>
+<div id="gamearea"></div>
+<div id="textbox">
+<p style="color:white"> Write your input here.</p>
+<textarea id="textareaID" rows="10" cols="50" >
+moveRight
+</textarea>
+
+<button id="clickme" onclick="printt()">CLICK</button>
+</div>
+    <h3 style="color:white; ">
+        INSTRUCTIONS
+    </h3>
+    <p style="color:white">
+        You are Jerry and you have the following 4 moves:
+        <br>
+       <span style="color:green"> moveRight
+        <br>
+        moveLeft
+        <br>
+        moveUp
+        <br>
+           moveDown </span>
+        <br>
+        Using the correct combination of these 4 functions, try to reach to get the Butter without encountering Tom on the way!
+        <br>
+        <span style="color:lightblue">
+        NOTE:
+        <br>
+        Write one function in one line.
+        <br>
+        Use the same spelling as discussed.
+        </span>
+        <br>
+        <span style="font-size: 1.2em">ALL THE BEST</span>
+    </p>
+<p id="demo"></p>
+<p id="demo2"></p>
+<p id="demo3">At:</p>
+<script>
+var game = new Phaser.Game(465, 400, Phaser.AUTO, 'gamearea', { preload: preload, create: create,update:update });
+
+function preload() 
+{
+
+    //  You can fill the preloader with as many assets as your game requires
+
+    //  Here we are loading an image. The first parameter is the unique
+    //  string by which we'll identify the image later in our code.
+
+    //  The second parameter is the URL of the image (relative)
+    game.load.image('einstein', "{{=URL('static','images/hero.gif')}}");
+	game.load.image('bound', "{{=URL('static','images/tom.jpg')}}");
+	game.load.image("background", "{{=URL('static','images/box.jpg')}}");
+	game.load.image("diamond","{{=URL('static','images/butter.gif')}}");
+}
+var cursor,image, width, height;
+var imwidth, imheight;
+var xx, arr=[], i, inn=-1;
+var flock=1;
+function create() 
+{
+    back=game.add.sprite(0,0,'background');
+    image = game.add.sprite(0, 0, 'einstein');
+	bound1= game.add.sprite(165, 290, 'bound');
+	dia= game.add.sprite(250, 320, 'diamond');
+	image.scale.setTo(0.65,0.65);
+	bound1.scale.setTo(0.75,0.75);
+	dia.scale.setTo(0.65,0.65);
+	game.physics.enable(image, Phaser.Physics.ARCADE);
+	game.physics.enable(bound1, Phaser.Physics.ARCADE);
+	game.physics.enable(dia, Phaser.Physics.ARCADE);
+	bound1.body.immovable = true;
+	dia.body.immovable = true;
+	//document.getElementById("demo").innerHTML="height: "+game.world.width+"<br>"+"width: "+game.world.height;
+	width=game.world.width;
+	height=game.world.height;
+	image.enableBody=true;
+//	document.getElementById("demo2").innerHTML="height: "+image.width+"<br>"+"width: "+image.height;
+	imwidth=image.width;
+	imheight=image.height;
+	//cursor=game.input.keyboard.createCursorKeys();
+}
+function update()
+{
+game.physics.arcade.collide(image, bound1, collisionHandler, null, this);
+game.physics.arcade.collide(image, dia, collisionHandler2, null, this);
+if(image.body.x<0)
+{
+	image.body.x=1;
+	image.body.velocity.x=0;
+	//document.getElementById("demo2").innerHTML=1+":"+inn;
+	inn++;
+}
+if(image.body.x>width-imwidth)
+{
+	image.body.x=width-imwidth;
+	image.body.velocity.x=0;
+	//document.getElementById("demo2").innerHTML=2+":"+inn;
+	inn++;
+}
+if(image.body.y<0)
+{
+	image.body.y=0;
+	image.body.velocity.y=0;
+	//document.getElementById("demo2").innerHTML=3+":"+inn;
+	inn++;
+}
+if(image.body.y>height-imheight)
+{
+	image.body.y=height-imheight;
+	image.body.velocity.y=0;
+	//document.getElementById("demo2").innerHTML=4+":"+inn;
+	inn++;
+}
+
+if(flock==0)
+{
+	if(arr[inn]=="moveLeft" && image.body.x>=0)
+	{
+		image.body.velocity.x=-150;
+	}
+	else
+	if(arr[inn]=="moveRight" && image.body.x<=width-imwidth)
+	{
+		image.body.velocity.x=150;
+	}
+	else
+	if(arr[inn]=="moveUp" && image.body.y>=0)
+	{
+		image.body.velocity.y=-150;
+	}
+	else
+	if(arr[inn]=="moveDown" && image.body.y<=height-imheight)
+	{
+		image.body.velocity.y=150;
+	}
+	else if(inn<arr.length)
+	{
+        //document.getElementById("demo2").innerHTML=":"+arr.length;
+        if(arr[inn]=="")
+        {
+            inn++;
+        }
+        else
+        {
+            alert("Seens like you have put a wrong line of code");
+            inn=arr.length;
+            image.body.x=image.body.y=0;
+        }
+    }
+    else if(inn==arr.length)
+    {
+        image.body.x=image.body.y=0;
+        alert("You couldn't reach the destination. Try editing your code.");
+        inn++;
+    }
+}
+
+
+
+
+/*
+
+if(cursor.right.isDown)
+{
+	if(image.body.x<width-imwidth)
+	{
+		document.getElementById("demo2").innerHTML=image.body.x+":"+width;
+		image.body.x+=10;
+	}
+}
+if(cursor.left.isDown)
+{
+	document.getElementById("demo2").innerHTML=image.body.x+":"+width;
+	if(image.body.x>0)
+	{
+		image.body.x-=10;
+	}
+}
+if(cursor.up.isDown)
+{
+	image.body.y-=10;
+}
+if(cursor.down.isDown)
+{
+	image.body.y+=10;
+}
+    */
+}
+function collisionHandler (obj1, obj2) {
+
+   alert("Tom caught you! RESTARTING!");
+   obj1.body.x=obj1.body.y=0;
+   arr=[];
+
+}
+function collisionHandler2 (obj1, obj2) {
+
+   alert("You won!");
+   obj1.body.x=obj1.body.y=0;
+   arr=[];
+    ajax('{{=URL('itocoding', 'levelsuccess', args=["1"])}}', [], ':eval');
+}
+</script>
+
+<script>
+
+function printt()
+{
+xx=$("#textareaID").val();
+arr=xx.split("\n");
+/*text="";
+for (i = 0; i < arr.length; i++) 
+{
+    text +=i+": "+ arr[i] + "<br>";
+}
+document.getElementById("demo").innerHTML = text;
+$('#demo').html(text);
+*/
+flock=0;
+inn=0;
+}
+</script>
+</body>
+</html>

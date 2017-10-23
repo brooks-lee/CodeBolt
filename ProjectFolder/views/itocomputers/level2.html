@@ -1,0 +1,227 @@
+{{extend 'layout.html'}}
+<head>
+    <style>
+        .draggable { width: 150px; height: 150px; padding: 0.5em; border: 2px solid black}
+         .droppable { color:black; width: 200px; height: 250px; padding: 0.5em; border: 2px solid black; background-color: yellow; display: inline block; float:left}
+</style>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+<h2>
+    Let's learn how to connect different parts of a computer alongtwith undestanding what they are named.
+</h2>
+<p>
+    A port serves as an interface between the computer and other computers or peripheral devices.  Computer ports have many uses, to connect a monitor, keyboard, mouse, or other peripheral devices. <span style="color:orange">Amongst the various types of ports,some are male port,female port,USB port. The female port holds the male connector. So,the CPU'll have a male port while the monitor has a female port.The CPU also has USB ports for devices like keyboard,mouse,printer.</span>
+    
+    </p></br>This is a male port <img  src="{{=URL('static','images/computers/level4/male_cpu.jpg')}}"/>,while this is a female port     <img  src="{{=URL('static','images/computers/level4/female.png')}}"/>whereas this is a usb port    <img  src="{{=URL('static','images/computers/level4/usb.jpg')}}"/>
+<h2>
+    <b>Task:</b><span style="color:yellow;">TASK: Connect the various parts of the computer.</span></h2>Drag the computer parts to the Yellow box with correct name and drag the ports to the blue box(if needed). Some of the blue box need not contain any ports as in here.
+<br>
+You will complete this level once you are done with the task wholly.
+<div>
+    <div id="droppable1" class="droppable" style="color:black; width: 120px; height: 180px;  padding: 0.5em; border: 2px solid black; background-color: #ADD8E6; display: inline block; float:right;left:730px;position:absolute;"></div>
+    <center><div>
+    <img id="cpu" src="{{=URL('static','images/computers/level4/cpu.png')}}"/>
+    </div>
+    </center>
+</div>
+<div><center>
+    <div style="border: 2px solid black; height: 300px; width: 805px">
+        <center>
+<div id="droppable2" class="droppable"><p>Monitor</p></div>
+<div id="droppable3" class="droppable"><p>Mouse</p></div>
+<div id="droppable4" class="droppable"><p>Keyboard</p></div>
+<div id="droppable5" class="droppable"><p>Printer</p></div>
+            </center>
+<div id="droppable6" class="droppable" style=" color:black; width: 200px; height: 50px; padding: 0.5em; border: 2px solid black; background-color: #ADD8E6; display: inline block; float:left" ><p></p></div>
+<div id="droppable7" class="droppable" style=" color:black; width: 200px; height: 50px; padding: 0.5em; border: 2px solid black; background-color: #ADD8E6; display: inline block; float:left"><p></p></div>
+<div id="droppable8" class="droppable" style=" color:black; width: 200px; height: 50px; padding: 0.5em; border: 2px solid black; background-color: #ADD8E6; display: inline block; float:left"><p></p></div>
+<div id="droppable9" class="droppable" style=" color:black; width: 200px; height: 50px; padding: 0.5em; border: 2px solid black; background-color: #ADD8E6; display: inline block; float:left"><p></p></div>
+</div></center>
+</div>
+<div></br>
+    <img class="draggable" id="mouse" src="{{=URL('static','images/computers/level4/mouse.png')}}"/>
+    <img class="draggable" id="printer" src="{{=URL('static','images/computers/level4/printer.png')}}"/>
+    <img class="draggable" id="keyboard" src="{{=URL('static','images/computers/level4/keyboard.png')}}"/>
+    <img class="draggable" id="monitor" src="{{=URL('static','images/computers/level4/monitor.png')}}"/>
+    <img class="draggable" style="color:black; width: 100px; height: 40px; padding: 0.5em; border: 2px solid black; background-color: #ADD8E6; display: inline block; float:left" id="female1" src="{{=URL('static','images/computers/level4/female.png')}}"/>
+     <img class="draggable" style="color:black; width: 100px; height: 40px; padding: 0.5em; border: 2px solid black; background-color: #ADD8E6; display: inline block; float:left" id="female2" src="{{=URL('static','images/computers/level4/female.png')}}"/>
+    <img class="draggable" style="color:black; width: 100px; height: 50px; padding: 0.5em; border: 2px solid black; background-color: #ADD8E6; display: inline block; float:left" id="male1" src="{{=URL('static','images/computers/level4/male_cpu.jpg')}}"/>
+    <img class="draggable" style="width: 55px; height: 55px; padding: 0.5em; border: 2px solid black" id="usb1" src="{{=URL('static','images/computers/level4/usb.jpg')}}"/>
+    <img class="draggable" style="width: 55px; height: 55px; padding: 0.5em; border: 2px solid black" id="usb2" src="{{=URL('static','images/computers/level4/usb.jpg')}}"/>
+    <img class="draggable" style="width: 55px; height: 55px; padding: 0.5em; border: 2px solid black" id="usb3" src="{{=URL('static','images/computers/level4/usb.jpg')}}"/>
+    
+ <p id="demo">
+</p>
+</div>
+<script>
+var usb=[0,0,0];
+var female=[0,0];
+var male=0;
+var totals=0;
+var monitor=0, mouse=0, keyboard=0, printer=0;
+function check(s1,s2)
+{
+    if((s1=="droppable1" && s2=="usb1") || (s1=="droppable1" && s2=="usb2") || (s1=="droppable1" && s2=="usb3"))
+    {totals=totals+1;
+        if(s2=="usb1")
+        {
+            usb[0]=1;
+        }
+        if(s2=="usb2")
+        {
+            usb[1]=1;
+        }
+        if(s2=="usb3")
+        {
+            usb[2]=1;
+        }
+    }
+    if((s1=="droppable1" && s2=="female1")||(s1=="droppable1" && s2=="female2"))
+    {totals=totals+1;
+        if(s2=="female1")
+        {
+            female[0]=1;
+        }
+        if(s2=="female2")
+        {
+            female[1]=1;
+        }
+    }
+if(s1=="droppable1" && s2=="male1")
+    {totals=totals+1;
+        male=1;
+    }
+if((s1=="droppable6" && s2=="female1")||(s1=="droppable6" && s2=="female2"))
+    {totals=totals+1;
+        if(s2=="female1")
+        {
+            female[0]=1;
+        }
+        if(s2=="female2")
+        {
+            female[1]=1;
+        }
+    }
+     if((s1=="droppable2" && s2=="monitor"))
+    {totals=totals+1;
+        monitor=1;
+    }
+if((s1=="droppable3" && s2=="mouse"))
+    {totals=totals+1;
+        mouse=1;
+    }
+if((s1=="droppable4" && s2=="keyboard"))
+    {totals=totals+1;
+        keyboard=1;
+    }
+
+if((s1=="droppable5" && s2=="printer"))
+    {totals=totals+1;
+        printer=1;
+    }
+    
+document.getElementById("demo").innerHTML=usb+"   "+female+"  "+male+" "+totals; 
+}
+function uncheck(s1,s2)
+{
+    if((s1=="droppable1" && s2=="usb1") || (s1=="droppable1" && s2=="usb2") || (s1=="droppable1" && s2=="usb3"))
+    {totals=totals-1;
+        
+        if(s2=="usb1")
+        {
+            usb[0]=0;
+        }
+        if(s2=="usb2")
+        {
+            usb[1]=0;
+        }
+        if(s2=="usb3")
+        {
+            usb[2]=0;
+        }
+    }
+    if((s1=="droppable1" && s2=="female1")||(s1=="droppable1" && s2=="female2"))
+    {
+        totals=totals-1;
+        if(s2=="female1")
+        {
+            female[0]=0;
+        }
+        if(s2=="female2")
+        {
+            female[1]=0;
+        }
+            
+    }
+if(s1=="droppable1" && s2=="male1")
+    {
+        totals=totals-1;
+        male=0;
+    }
+    if((s1=="droppable2" && s2=="monitor"))
+    {totals=totals-1;
+        monitor=0;
+    }
+if((s1=="droppable6" && s2=="female1")||(s1=="droppable6" && s2=="female2"))
+    {
+        totals=totals-1;
+        if(s2=="female1")
+        {
+            female[0]=0;
+        }
+        if(s2=="female2")
+        {
+            female[1]=0;
+        }
+    }
+if((s1=="droppable3" && s2=="mouse"))
+    {
+        totals=totals-1;
+        mouse=0;
+    }
+if((s1=="droppable4" && s2=="keyboard"))
+    {
+        totals=totals-1;
+        keyboard=0;
+    }
+
+if((s1=="droppable5" && s2=="printer"))
+    {
+        totals=totals-1;
+        printer=0;
+    }
+document.getElementById("demo").innerHTML=usb+"   "+female+"  "+male+"  "+totals ; 
+}
+
+    function gameprocess()
+    {
+      if(monitor==1 && keyboard==1 && mouse==1 && printer ==1 && usb[0]==1 && usb[1]==1 && usb[2]==1 && male==1 && female[0]==1 && female[1]==1)
+      {
+          alert("Great! You made it.");
+           ajax('{{=URL('itocomputers', 'levelsuccess', args=["2"])}}', [], ':eval');
+      }
+       /* else if(totals==10)
+        {
+            alert("You have made some mistakes. Correct them.");
+        }*/
+    }
+
+$(document).ready(function() {
+     $( ".draggable" ).draggable();
+   $( ".droppable" ).droppable({
+      drop: function( event, ui ) {
+	  check(this.id,ui.draggable.attr("id"));
+          gameprocess();
+            }
+   });
+     $( ".droppable" ).droppable({
+       out: function( event, ui ) {
+	  uncheck(this.id,ui.draggable.attr("id"));
+            }
+      });
+});
+
+    </script>
+</body>

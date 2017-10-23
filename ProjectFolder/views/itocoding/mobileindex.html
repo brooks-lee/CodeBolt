@@ -1,0 +1,42 @@
+{{extend 'layout.html'}}
+<head>
+<style>
+    .droppable { width: 200px; height: 250px; padding: 0.5em; border: 2px solid white; background-image: url("{{=URL('static', 'images/home/droppable.png')}}"); background-repeat: no-repeat; background-position: center; display:inline-block; text-align:center }
+    .droppableold { width: 200px; height: 250px; padding: 0.5em; border: 2px solid green; background-image: url("{{=URL('static', 'images/home/droppableold.png')}}"); background-repeat: no-repeat; background-position: center;display:inline-block;  text-align:center }
+    .undroppable { width: 200px; height: 250px; padding: 0.5em; border: 2px solid orange; background-image: url("{{=URL('static', 'images/home/undroppable.png')}}");background-repeat: no-repeat; background-position: center;display:inline-block;  text-align:center }
+    body
+    {
+        background-image:url("{{=URL('static','images/background1.jpg')}}");
+    }
+    
+  </style>
+
+</head>
+<body>
+    <h1 style="text-align:center">
+        INTRODUCTION TO CODING
+    </h1>
+    <p>
+        Hi! By completing this arena, you will learn how magical coding is and you will fall in love with it for sure. <br>
+        Coding is nothing but set of instructions that you want the computer to do for you. <br>
+        Complete these levels and get introduced to the wonderful world of coding.
+    </p>
+    <h2 style="text-align:left">
+        SELECT THE LEVEL YOU WISH TO PLAY!
+    </h2>
+    {{for level in range(1,levels+1):}}
+    {{if useract.playing2 +1 > level:}}
+    <a href="{{=URL('itocoding','level'+str(level))}}">
+<div class="droppableold" id="{{=level}}"><p>COMPLETED LEVEL {{=level}}</p></div>
+    </a>
+{{elif useract.playing2 +1== level:}}
+    <a href="{{=URL('itocoding','level'+str(level))}}">
+<div class="droppable" id="{{=level}}"><p>PLAY LEVEL {{=level}}</p></div>
+</a>
+        {{else:}}
+<div class="undroppable" ><p>LEVEL {{=level}}</p></div>
+     {{pass}}
+    
+{{pass}}
+
+</body>

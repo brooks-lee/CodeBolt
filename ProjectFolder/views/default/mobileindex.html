@@ -1,0 +1,29 @@
+{{extend 'layout.html'}}
+<style>
+     .pics
+    {
+        width: 150px; height: 200px;
+    }
+body
+    {
+        background-image:url("{{=URL('static','images/background1.jpg')}}");
+    }
+</style>
+<h2 style="text-align:left">
+        SELECT THE ARENA YOU WISH TO PLAY IN!
+    </h2>
+<a href="{{=URL('itocomputers','index')}}">
+<div><p>Introduction to Computers</p>
+    <img class="pics" src="{{=URL('static', 'images/home/computerparts.jpg')}}"/>
+    </div>
+</a>
+<a href="{{=URL('itocoding','index')}}">
+<div ><p>Introduction to Coding</p>
+    <img class="pics" src="{{=URL('static', 'images/home/code.png')}}"/>
+    </div>
+</a>
+<a href="{{=URL('codeandenjoy','index')}}">
+<div ><p >Introduction to data structures</p>
+    <img class="pics" src="{{=URL('static', 'images/home/codefun.jpg')}}"/>
+    </div>
+</a>

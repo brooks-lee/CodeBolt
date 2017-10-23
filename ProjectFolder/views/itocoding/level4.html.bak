@@ -1,0 +1,449 @@
+{{extend 'layout.html'}}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style>
+.mybutton
+    {
+        
+    }
+#myCanvas
+{
+border: 2px black solid;
+     background-size: 100% 100%;
+     background-position:100% 100%; 
+	 width:320px;
+	 height:320px;
+}
+body
+{
+background-color: lightblue;
+color:black;
+}
+</style>
+
+<body>
+<h1>TICTACTOE</h1>
+<img id="00" src="{{=URL('static','images/tictactoe/blank.png')}}" />
+<img id="01" src="{{=URL('static','images/tictactoe/blank.png')}}" />
+<img id="02" src="{{=URL('static','images/tictactoe/blank.png')}}"/>
+<br>
+<img id="10" src="{{=URL('static','images/tictactoe/blank.png')}}" />
+<img id="11" src="{{=URL('static','images/tictactoe/blank.png')}}" />
+<img id="12" src="{{=URL('static','images/tictactoe/blank.png')}}" />
+<br>
+<img id="20" src="{{=URL('static','images/tictactoe/blank.png')}}"/>
+<img id="21" src="{{=URL('static','images/tictactoe/blank.png')}}"/>
+<img id="22" src="{{=URL('static','images/tictactoe/blank.png')}}"/>
+<br>
+<input type="text" id="textareaID" value="play(2,2)" >
+<button class="mybutton" onclick="printt()">CLICK ME</button> 
+<br>
+<button class="mybutton" onclick="refresh()">RESTART</button>
+<br>
+<h3 style="text-align: center">
+INSTRUCTIONS
+</h3>
+<p>
+you have to use <span style="color:blue"> play(row, column) </span> to make your move at the specified row and column. Play against the computer
+and defeat it to win the game! Row and column ranges from 1 to 3. For example play(2,2) would mean making your move at the middle tile.
+</p>
+
+<script>
+
+var x = new Array(3);
+var i,j,a, filled=0, cwon, pwon, compfill, statuss;
+var k=[], kk, rand;
+var inn=0;
+for (i = 0; i < 3; i++) {
+  x[i] = new Array(3);
+  for(j=0;j<3;j++)
+  {
+	x[i][j]=0;
+  }
+}
+
+var arr;
+var newstr;
+var finder, efinder;
+var aa,bb, text;
+function printt()
+{
+
+arr=$("#textareaID").val();
+text=""
+if(!(arr=="" || arr==" "))
+{
+
+	finder=arr.indexOf("play(");
+	if(finder>=0)
+	{
+		newstr=arr.substring(finder+5, arr.length);
+		finder=newstr.indexOf(")");
+		if(finder>=0)
+		{
+			newstr=newstr.substring(0,finder);
+			aa=parseInt(newstr);
+			finder=newstr.indexOf(",");
+			if(finder>=0)
+			{
+				newstr=newstr.substring(finder+1, newstr.length);
+				bb=parseInt(newstr);
+				aa=aa-1;
+				bb=bb-1;
+				text=text+aa+bb;
+				
+				if((aa>=0 && aa<=2) &&(bb>=0 && bb<=2))
+				{
+					gameon(text);
+				}
+				else
+				{
+					alert("YOU HAVE ENTERED POSITION WHICH IS OUT OF ORDER.");
+				}
+				
+			}
+			else
+			{
+				alert("There is something wrong with your syntax. We can't find two no.s separated by a comma.");
+			}
+			
+		}
+		else
+		{
+			alert("There is something wrong with your syntax. Maybe you did not close the bracket.");
+		}
+		
+	}
+	else
+	{
+		alert("There is something wrong with your syntax. You didn't use \"play(PARAMETERS)\".");
+	}
+}	
+document.getElementById("demo2").innerHTML = "it is:   "+text;
+
+
+}
+function refresh()
+{
+	for (i = 0; i < 3; i++) 
+	{
+		for(j=0;j<3;j++)
+		{
+			x[i][j]=0;
+			a=""+i+j;
+			document.getElementById(a).src="{{=URL('static','images/tictactoe/blank.png')}}";
+		}
+	}
+	filled=0;
+}
+function checkgameon(x)
+{
+if(filled==9)
+{
+	return false;
+}
+else
+{
+	return true;
+}
+  
+}
+
+function bestfill(x)
+{
+//checking cases where winning is possible
+if((x[0][0]==-1 && x[1][1]==-1 && x[2][2]==0)||(x[0][0]==-1 && x[1][1]==0 && x[2][2]==-1)||(x[0][0]==0 && x[1][1]==-1 && x[2][2]==-1))
+	{
+		for( j=0;j<3;j++)
+			{
+				if(x[j][j]==0)
+					{
+						a=""+j+j;
+						return a;
+					}
+			}
+	}
+		
+		
+if((x[2][0]==-1 && x[1][1]==-1 && x[0][2]==0)||(x[2][0]==-1 && x[1][1]==0 && x[0][2]==-1)||(x[2][0]==0 && x[1][1]==-1 && x[0][2]==-1))
+	{
+		for(j=0;j<3;j++)
+		{
+			if(x[j][2-j]==0)
+			{
+				
+				a=""+j+(2-j);
+				return a;
+			}
+		}
+	}
+
+for(i=0;i<3;i++)
+	{
+		if((x[i][0]==-1 && x[i][1]==-1 && x[i][2]==0)||(x[i][0]==-1 && x[i][1]==0 && x[i][2]==-1)||(x[i][0]==0 && x[i][1]==-1 && x[i][2]==-1))
+		{
+			for(j=0;j<3;j++)
+			{
+				if(x[i][j]==0)
+				{
+					a=""+i+j;
+					return a;
+				}
+			}
+		}
+	}
+	for( i=0;i<3;i++)
+	{
+		if((x[0][i]==-1 && x[1][i]==-1 && x[2][i]==0)||(x[0][i]==-1 && x[1][i]==0 && x[2][i]==-1)||(x[0][i]==0 && x[1][i]==-1 && x[2][i]==-1))
+		{
+			for( j=0;j<3;j++)
+			{
+				if(x[j][i]==0)
+				{
+					a=""+j+i;
+					return a;
+				}
+			}
+		}
+	}
+//winning ends here
+//checking cases for defending
+
+if(x[0][0]==-1 && x[1][1]==1 && x[2][2]==1 && x[0][2]==0)
+{
+	a=""+0+2;
+	return a;
+	
+}
+	if(x[2][0]==1 && x[1][0]==0 && x[0][1]==0 && x[2][1]==0 && x[0][2]==1 && x[1][1]==-1)
+	{
+		a=""+2+1;	
+		return a;	
+	}
+if(x[0][0]==1 && x[1][0]==0 && x[2][0]==0 && x[2][1]==0 && x[2][2]==1 && x[1][1]==-1 && x[0][1]==0)
+{
+	a=""+0+1;
+	return a;
+}
+	if((x[0][0]==1 && x[1][1]==1 && x[2][2]==0)||(x[0][0]==1 && x[1][1]==0 && x[2][2]==1)||(x[0][0]==0 && x[1][1]==1 && x[2][2]==1))
+		{
+			for( j=0;j<3;j++)
+			{
+				if(x[j][j]==0)
+				{
+					a=""+j+j;
+					return a;
+				}
+			}
+		}
+		if((x[2][0]==1 && x[1][1]==1 && x[0][2]==0)||(x[2][0]==1 && x[1][1]==0 && x[0][2]==1)||(x[2][0]==0 && x[1][1]==1 && x[0][2]==1))
+		{
+			for( j=0;j<3;j++)
+			{
+				if(x[j][2-j]==0)
+				{
+					
+					a=""+j+(2-j);
+					return a;
+				}
+			}
+		}
+	for(i=0;i<3;i++)
+	{
+		if((x[i][0]==1 && x[i][1]==1 && x[i][2]==0)||(x[i][0]==1 && x[i][1]==0 && x[i][2]==1)||(x[i][0]==0 && x[i][1]==1 && x[i][2]==1))
+		{
+			for(j=0;j<3;j++)
+			{
+				if(x[i][j]==0)
+				{
+					a=""+i+j;
+					return a;
+				}
+			}
+		}
+	}
+	for(i=0;i<3;i++)
+	{
+		if((x[0][i]==1 && x[1][i]==1 && x[2][i]==0)||(x[0][i]==1 && x[1][i]==0 && x[2][i]==1)||(x[0][i]==0 && x[1][i]==1 && x[2][i]==1))
+		{
+			for(j=0;j<3;j++)
+			{
+				if(x[j][i]==0)
+				{
+					a=""+j+i;
+					return a;
+				}
+			}
+		}
+	}
+//defending stops here
+//attacking starts here
+if(x[1][1]==0)
+{
+	a=""+1+1;
+	return a;
+}
+if((x[0][0]==-1 && x[1][1]==0 && x[2][2]==0)||(x[0][0]==0 && x[1][1]==-1 && x[2][2]==0)||(x[0][0]==0 && x[1][1]==0 && x[2][2]==-1))
+		{
+			for( j=0;j<3;j++)
+			{
+				if(x[j][j]==0)
+				{
+					a=""+j+j;
+					return a;
+				}
+			}
+		}
+		if((x[2][0]==-1 && x[1][1]==0 && x[0][2]==0)||(x[2][0]==0 && x[1][1]==-1 && x[0][2]==0)||(x[2][0]==0 && x[1][1]==0 && x[0][2]==-1))
+		{
+			for(j=0;j<3;j++)
+			{
+				if(x[j][2-j]==0)
+				{
+					
+					a=""+j+(2-j);
+					return a;
+				}
+			}
+		}
+for( i=0;i<3;i++)
+	{
+		if((x[i][0]==0 && x[i][1]==0 && x[i][2]==-1)||(x[i][0]==-1 && x[i][1]==0 && x[i][2]==0)||(x[i][0]==0 && x[i][1]==-1 && x[i][2]==0))
+		{
+			for( j=0;j<3;j++)
+			{
+				if(x[i][j]==0)
+				{
+					a=""+i+j;
+					return a;
+				}
+			}
+		}
+	}
+	for(i=0;i<3;i++)
+	{
+		if((x[0][i]==-1 && x[1][i]==0 && x[2][i]==0)||(x[0][i]==0 && x[1][i]==-1 && x[2][i]==0)||(x[0][i]==0 && x[1][i]==0 && x[2][i]==-1))
+		{
+			for(j=0;j<3;j++)
+			{
+				if(x[j][i]==0)
+				{
+					a=""+j+i;
+					return a;
+				}
+			}
+		}
+	}
+
+for (i = 0; i < 3; i++) 
+	{
+	for( j=0;j<3;j++)
+	{
+		if(x[i][j] == 0)
+		{
+			a=""+i+j;
+			return a;
+		}
+	}
+  
+}	
+
+//attacking ends here
+}
+
+function bestfill2(x)
+{
+inn=0;
+k=[];
+for (i = 0; i < 3; i++) 
+	{
+		for(j=0;j<3;j++)
+		{
+			if(x[i][j] == 0)
+			{
+				a=""+i+j;
+				k[inn]=a;
+				inn+=1;
+			}
+		}
+	}
+	kk=Math.floor((Math.random()*inn));
+	return k[kk];
+	
+}
+
+
+
+
+function checkwon(x, k)
+{
+if((x[0][0]==k && x[0][1]==k && x[0][2]==k)||(x[1][0]==k && x[1][1]==k && x[1][2]==k) || (x[2][0]==k && x[2][1]==k && x[2][2]==k))
+{
+	return true;
+}
+else if((x[0][0]==k && x[1][0]==k && x[2][0]==k)||(x[0][1]==k && x[1][1]==k && x[2][1]==k)|| (x[0][2]==k && x[1][2]==k && x[2][2]==k))
+{
+	return true;
+}
+else if ((x[0][0]==k && x[1][1]==k && x[2][2]==k)|| (x[0][2]==k && x[1][1]==k && x[2][0]==k))
+{
+	return true;
+}
+else
+{
+	return false;
+}
+}
+function gameon(id)
+{
+	if(x[id.charAt(0)][id.charAt(1)]==1 || x[id.charAt(0)][id.charAt(1)]==-1)
+	{
+		alert("This place is already filled! Try again")
+	}
+	else
+	{
+	document.getElementById(id).src="{{=URL('static','images/tictactoe/player.png')}}";
+	x[id.charAt(0)][id.charAt(1)]=1;
+	pwon=checkwon(x,1);
+	filled+=1;
+	if(pwon==true)
+	{
+		alert("YOU WON");
+		refresh();
+	}
+	else
+	{
+	statuss=checkgameon(x);
+
+	if (statuss == false)
+	{
+		alert("GAME DRAWN");
+		refresh();
+	}
+	else
+	{		
+			randd=(Math.random()*3);
+			if(randd>1.2)
+			{
+				compfill=bestfill(x);
+			}
+			else
+			{
+				compfill=bestfill2(x);
+			}
+			document.getElementById(compfill).src="{{=URL('static','images/tictactoe/comp.png')}}";
+			x[compfill.charAt(0)][compfill.charAt(1)]=-1;
+			cwon=checkwon(x,-1);
+			filled+=1;
+			if(cwon===true)
+		{
+		alert("RBOT WON");
+		setTimeout(function(){ refresh()}, 1500);
+			
+		}
+		
+	}
+	}
+	}
+}
+</script>

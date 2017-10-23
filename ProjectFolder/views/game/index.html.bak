@@ -1,0 +1,71 @@
+{{extend 'layout.html'}}
+<head>
+<style>
+  #draggable { width: 150px; height: 150px; padding: 0.5em; border: 2px solid black}
+  .droppable { width: 200px; height: 250px; padding: 0.5em; border: 2px solid black; background-color: yellow;display:inline-block }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $(document).ready(function() {
+    $( "#draggable" ).draggable();
+	var x = $("#draggable").position();
+       $( ".droppable" ).droppable({
+      drop: function( event, ui ) {
+        $( this )
+          .find( "p" )
+            .html( "Dropped!" );
+			stopdragging();
+			//myObject.draggable( 'disable' )
+      }
+	 
+    });
+	$( ".droppable" ).droppable({
+      out: function( event, ui ) {
+        $( this )
+          .find( "p" )
+            .html( "Out!" );
+			//myObject.draggable( 'disable' )
+      }
+	 
+    });
+	
+	$( ".droppable" ).droppable({
+		over: function( event, ui ) 
+		{
+			//$(this).find("p").html("Over me!");
+		}
+});
+	
+  } );
+  
+  
+  function stopdragging() {
+  $(document).ready(function() {
+   $( "#draggable").draggable({
+  disabled: true
+  });
+   
+});
+}
+function startdragging() {
+  $(document).ready(function() {
+   $( "#draggable").draggable({
+  disabled: false
+  });
+   
+});
+}
+  </script>
+
+</head>
+<body>
+    {{for level in range(levels):}}
+<div class="droppable"><p>LEVEL {{=level}}</p></div>
+   
+{{pass}}
+<div id="draggable">
+  <p>Drag me around</p>
+</div>
+     <button onclick="startdragging()">CLICK ME</button>
+</body>

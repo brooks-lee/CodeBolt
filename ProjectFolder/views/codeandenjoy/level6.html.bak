@@ -1,0 +1,19 @@
+{{extend 'layout.html'}}
+<style>
+.inqueue
+    {
+        height: 150px;
+    }
+</style>
+<p>
+    Answer the two correctly:
+</p>
+<img class="inqueue" src="{{=URL('static','images/ds/counter.png')}}">
+<img class="inqueue" src="{{=URL('static','images/ds/queue1.jpg')}}">
+<br>
+<img class="inqueue" src="{{=URL('static','images/ds/counter.png')}}">
+<img class="inqueue" src="{{=URL('static','images/ds/queue2.jpg')}}">
+<br>
+<img class="inqueue" src="{{=URL('static','images/ds/counter.png')}}">
+<img class="inqueue" src="{{=URL('static','images/ds/queue3.jpg')}}">
+<br>

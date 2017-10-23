@@ -1,0 +1,161 @@
+{{extend 'layout.html'}}
+
+<head>
+<style>
+</style>
+<script src="{{=URL('static','js/phaser.min.js')}}"></script>
+</head>
+<body>
+    <h2 style="text-align:center">
+        HIDE AND SEEK
+    </h2>
+    <p style="text-align:center">
+        Click to catch the computer parts one by one and avoid clicking on the non - computer parts.
+    </p>
+<div id="gamearea"></div>
+<p id="demo"></p>
+<p id="demo2"></p>
+<script>
+var game = new Phaser.Game(800, 500, Phaser.AUTO, 'gamearea', { preload: preload, create: create,update:update });
+var one;
+var two, three, four, five, six;
+var nextSprite1, nextSprite2, nextSprite3, nextSprite4, nextSprite5, nextSprite6;
+function preload() {
+
+    game.load.image('onepic', "{{=URL('static','images/computers/level1/cpu.png')}}" );
+	game.load.image('twopic',  "{{=URL('static','images/computers/level1/mouse.png')}}");
+	game.load.image('threepic',  "{{=URL('static','images/computers/level1/shirt.jpg')}}");
+	game.load.image('fourpic', "{{=URL('static','images/computers/level1/printer.png')}}");
+    game.load.image('fivepic', "{{=URL('static','images/computers/level1/bottle.jpg')}}");
+    game.load.image('sixpic', "{{=URL('static','images/computers/level1/plate.jpg')}}");
+	game.load.image("background",  "{{=URL('static','images/computers/level1/back.jpg')}}");
+}
+function create() 
+{
+	game.add.sprite(0,0,'background');
+	game.input.touch.preventDefault = false;
+	nextSprite1=nextSprite2=nextSprite3=nextSprite4=nextSprite5=nextSprite6=game.time.now;
+	
+    six = game.add.sprite(400,200,'sixpic');
+	game.physics.enable(six, Phaser.Physics.ARCADE);
+	six.scale.setTo(0.6,0.6);
+	six.inputEnabled = true;
+    six.events.onInputDown.add(clicked6, this);
+    
+    five = game.add.sprite(400,200,'fivepic');
+	game.physics.enable(five, Phaser.Physics.ARCADE);
+	five.scale.setTo(0.6,0.6);
+	five.inputEnabled = true;
+    five.events.onInputDown.add(clicked5, this);
+    
+	four = game.add.sprite(400,200,'fourpic');
+	game.physics.enable(four, Phaser.Physics.ARCADE);
+	four.scale.setTo(0.6,0.6);
+	four.inputEnabled = true;
+    four.events.onInputDown.add(clicked4, this);
+	
+	three = game.add.sprite(400,200,'threepic');
+	game.physics.enable(three, Phaser.Physics.ARCADE);
+	three.scale.setTo(0.6,0.6);
+	three.inputEnabled = true;
+    three.events.onInputDown.add(clicked3, this);
+	
+	two = game.add.sprite(400,200,'twopic');
+	game.physics.enable(two, Phaser.Physics.ARCADE);
+	two.scale.setTo(0.6,0.6);
+	two.inputEnabled = true;
+    two.events.onInputDown.add(clicked2, this);
+
+    one = game.add.sprite(200,200,'onepic');
+	game.physics.enable(one, Phaser.Physics.ARCADE);
+	one.scale.setTo(0.6,0.6);
+	one.inputEnabled = true;
+    one.events.onInputDown.add(clicked1, this);
+	
+}
+function clicked1()
+{
+    one.visible=false;
+}
+function clicked2()
+{
+	two.visible=false;
+}
+function clicked3()
+{
+	three.visible=false;
+}
+function clicked4()
+{
+	four.visible=false;
+}
+    function clicked5()
+{
+	five.visible=false;
+}
+    function clicked6()
+{
+	six.visible=false;
+}
+function update(){
+if(three.visible && five.visible && six.visible && !one.visible && !two.visible && !four.visible)
+{
+	alert("YOU WON");
+    one.visible=two.visible=four.visible=true;
+    ajax('{{=URL('itocomputers', 'levelsuccess', args=["1"])}}', [], ':eval');
+}
+if(!three.visible || !five.visible || !six.visible)
+{
+	alert("WRONG! :(  The Game will restart!");
+    three.visible=five.visible=six.visible=true;
+	location.reload();
+}
+if(one.visible)
+{
+	if (game.time.now > nextSprite1) {  
+	document.getElementById("demo").innerHTML="TIME ELAPSED (in seconds): "+Math.floor(game.time.totalElapsedSeconds());
+player(one);	
+	nextSprite1 = game.time.now + 860;}
+}
+    if(six.visible)
+{
+	if (game.time.now > nextSprite6) {
+        player(six);
+	nextSprite6 = game.time.now + 860;}
+}
+    
+    if(five.visible)
+{
+	if (game.time.now > nextSprite5) {
+        player(five);
+	nextSprite5 = game.time.now + 860;}
+}
+if(four.visible)
+{
+	if (game.time.now > nextSprite4) {
+        player(four);
+	nextSprite4 = game.time.now + 860;}
+}
+if(two.visible)
+{
+	if (game.time.now > nextSprite2) {  
+player(two);	
+	nextSprite2 = game.time.now + 860;}
+}
+if(three.visible)
+{
+	if (game.time.now > nextSprite3) {  
+player(three);	
+	nextSprite3 = game.time.now + 860;}
+}
+}
+function player(obj)
+{
+
+obj.body.x=Math.random()*600 +1;
+obj.body.y=Math.random()*400 +1;
+}
+
+//setInterval(player, 1000);
+</script>
+</body>

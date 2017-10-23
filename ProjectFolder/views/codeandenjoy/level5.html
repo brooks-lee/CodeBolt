@@ -1,0 +1,293 @@
+{{extend 'layout.html'}}
+<head>
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+
+	.droppable { 
+   position: relative;  
+        background-image:url("{{=URL('static','images/boys/cloud1.jpg')}}");
+   background-repeat:no-repeat;
+  
+}
+
+h2 { 
+   position: absolute; 
+   
+   width: 100%; 
+}
+.draggable
+{
+width: 70px;
+height: 130px;
+}
+.final
+{
+
+visibility = 'hidden';
+}
+.info
+        {
+            margin-left:auto;
+        margin-right: auto;
+        display:block;
+        }
+        .inqueue
+        {
+            
+            width:100px;
+            height: 130px;
+            
+        }
+        .counter
+        {
+            height: 150px;
+            width:100px;
+        }
+    </style>
+</head>
+<body >
+ <h1 style="text-align:center">
+         QUEUES
+      </h1>
+    <p>
+       Queue, as the name suggests is used whenever we need to have any group of objects in an order in which the first one coming in, also gets out first while the others wait for there turn, like in the following scenarios :
+        <br>
+    <img class="info" src="{{=URL('static','images/ds/queue.jpg')}}" alt="" />
+    
+    <p>
+        TASK 1: Alex and his friends are waiting for school bus to go to school from their hostel. 
+        <br>
+        The one who enters first goes and occupies the last unoccupied seat near the window.
+        <br>
+        When the bus reaches the school the front door is closed and students can come out from the back gate only. The one at back comes out first.
+        <br>
+        It follows a queue like implementation.
+        <br>
+        Help Alex come out first as he wants to go early to his classroom and sit on the first bench in the class.
+        <br>
+        Drag the students to the gate of the bus one by one accordingly.
+        <br>
+        NOTE: all students have their roll no.s written on their tshirt and Alex is dressed in black with roll no. 4.
+    </p>
+<div class="droppable"  >
+<br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    
+      <img src="{{=URL('static','images/boys/bus2.png')}}" alt="" />
+
+       <h2 style="top:310px;color:black;left:180px;" id="0">-</h2>
+       <h2 style="top:310px;color:black;left:250px" id="1">-</h2>
+       <h2 style="top:310px;color:black;left:320px" id="2">-</h2>
+       <h2 style="top:310px;color:black;left:390px" id="3">-</h2>
+       <h2 style="top:310px;color:black;left:450px" id="4">-</h2>
+       <h2 style="top:310px;color:black;left:520px" id="5">-</h2>
+       <h2 style="top:310px;color:black;left:570px" id="6">-</h2>
+       <h2 style="top:310px;color:black;left:635px" id="7">-</h2>
+       <h2 style="top:310px;color:black;left:700px" id="8">-</h2>
+       <h2 style="top:310px;color:black;left:760px" id="9">-</h2>
+<img  id="place" >
+</div>
+<br>
+
+<img class="draggable" id="s0" src="{{=URL('static','images/boys/boy1.jpg')}}">
+<img class="draggable" id="s1" src="{{=URL('static','images/boys/boy2.jpg')}}">
+<img class="draggable" id="s2" src="{{=URL('static','images/boys/boy3.jpg')}}">
+<img class="draggable" id="s3" src="{{=URL('static','images/boys/you.jpg')}}">
+<img class="draggable" id="s4" src="{{=URL('static','images/boys/boy5.jpg')}}">
+<img class="draggable" id="s5" src="{{=URL('static','images/boys/boy6.jpg')}}">
+<img class="draggable" id="s6" src="{{=URL('static','images/boys/boy7.jpg')}}">
+<img class="final" id="f6">
+<img class="final" id="f5">
+<img class="final" id="f4">
+<img class="final" id="f3">
+<img class="final" id="f2">
+<img class="final" id="f1">
+<img class="final" id="f0">
+     <button id="butt" style="visibility:hidden; background-color:lightblue; color:black" onclick="levelcomplete()">
+        CONGRATS! CLICK TO CONTINUE
+    </button>
+    <p id="demo">
+        
+    </p>
+<br>
+    <br>
+   
+    <br>
+    <br>
+    <p>
+            TASK 2:
+        Help Alex choose which queue to join in front of the bank counter so as to reach the counter early if every customer spends the same amount
+        of time at the counter.
+    </p>
+    <img class="counter" id="c1" src="{{=URL('static','images/ds/counter.png')}}">
+<img class="inqueue" id="i1" src="{{=URL('static','images/ds/queue1.jpg')}}">
+<br>
+<img class="counter" id="c2" src="{{=URL('static','images/ds/counter.png')}}">
+<img class="inqueue" id="i2" src="{{=URL('static','images/ds/queue2.jpg')}}">
+<br>
+<img class="counter" id="c3" src="{{=URL('static','images/ds/counter.png')}}">
+<img class="inqueue" id="i3" src="{{=URL('static','images/ds/queue3.jpg')}}">
+    <br>
+    <img class="draggable" id="boyalex" src="{{=URL('static','images/boys/you.jpg')}}">
+
+    <br>
+    <br>
+    <br>
+    <script type="text/javascript">
+
+
+var one=0, two=0;
+var seat=[-1,-1,-1,-1,-1,-1,-1,-1,-1,0];
+var stu=["no","no","no","no","no","no","no"];
+function check(s)
+{
+	var k=seat.indexOf(0);
+	seat[k]=1;
+	var changer=parseInt(s[1])+1;
+	document.getElementById(k).innerHTML=s[0]+changer;
+	seat[k-1]=0;
+	
+	var kk=stu.indexOf("no");
+	stu[kk]=s;
+//	document.getElementById("demo2").innerHTML=stu+"  "+seat;
+	document.getElementById(s).style.visibility = 'hidden';
+	
+	return k;
+
+}
+        function levelcomplete()
+        {
+            ajax('{{=URL('codeandenjoy', 'levelsuccess', args=["5"])}}', [], ':eval');
+        }
+        
+        
+function studentsout()
+{
+
+var im0=document.getElementById(stu[6]);
+document.getElementById("f0").src=im0.src;
+document.getElementById("f0").style.visibility = 'visible';
+document.getElementById("f0").style.width="70px";
+document.getElementById("f0").style.height="130px";
+
+var im1=document.getElementById(stu[5]);
+document.getElementById("f1").src=im1.src;
+document.getElementById("f1").style.visibility = 'visible';
+document.getElementById("f1").style.width="70px";
+document.getElementById("f1").style.height="130px";
+
+
+var im2=document.getElementById(stu[4]);
+document.getElementById("f2").src=im2.src;
+document.getElementById("f2").style.visibility = 'visible';
+document.getElementById("f2").style.width="70px";
+document.getElementById("f2").style.height="130px";
+
+
+var im3=document.getElementById(stu[3]);
+document.getElementById("f3").src=im3.src;
+document.getElementById("f3").style.visibility = 'visible';
+document.getElementById("f3").style.width="70px";
+document.getElementById("f3").style.height="130px";
+
+
+var im4=document.getElementById(stu[2]);
+document.getElementById("f4").src=im4.src;
+document.getElementById("f4").style.visibility = 'visible';
+document.getElementById("f4").style.width="70px";
+document.getElementById("f4").style.height="130px";
+
+
+var im5=document.getElementById(stu[1]);
+document.getElementById("f5").src=im5.src;
+document.getElementById("f5").style.visibility = 'visible';
+document.getElementById("f5").style.width="70px";
+document.getElementById("f5").style.height="130px";
+
+
+var im6=document.getElementById(stu[0]);
+document.getElementById("f6").src=im6.src;
+document.getElementById("f6").style.visibility = 'visible';
+document.getElementById("f6").style.width="70px";
+document.getElementById("f6").style.height="130px";
+}
+$(document).ready(function() {
+  
+    $( ".draggable" ).draggable();
+      $( ".inqueue" ).droppable({
+      drop: function( event, ui ) {
+          var k=this.id;
+          var l=ui.draggable.attr("id");
+          if(k=="i1" && l=="boyalex")
+          {
+              alert("Try again. Wrong queue.");
+          }
+          if(k=="i2" && l=="boyalex")
+          {
+              alert("Cool! You got it right.");
+              two=1;
+              if(one==1 && two==1)
+              {
+                   ajax('{{=URL('codeandenjoy', 'levelsuccess', args=["5"])}}', [], ':eval');
+              }
+          }
+          if(k=="i3" && l=="boyalex")
+          {
+              alert("Try again. Wrong queue.");
+          }
+          
+          
+      }
+      });
+	  $( ".droppable" ).droppable({
+      drop: function( event, ui ) {
+	  var dragged=ui.draggable.attr("id");
+	  var newPosX = ui.offset.left - $(this).offset().left;
+        var newPosY = ui.offset.top - $(this).offset().top;
+         // document.getElementById("demo").innerHTML="CURRENT: \nLeft: " + newPosX + "\nTop: " + newPosY;
+		if((newPosX>=10 && newPosX<=150)&&(newPosY>=200 && newPosY<=400))
+		{
+	  var empty=check(dragged);
+	//  document.getElementById("demo").innerHTML=empty+dragged;
+
+       
+	  if(empty==3)
+	  {
+          if(stu[0]!="s3")
+          {
+              alert("Alex can't come out first. Read the lesson above and try again. The Game will restart now!");
+              location.reload();
+          }
+          else
+          {
+	 // document.getElementById("place").src="{{=URL('static','images/boys/school.jpg')}}";
+	   alert("Great! You have made all students sit in the bus in the correct way. Now do TASK2.");
+              one=1;
+              if(one==1 && two==1)
+              {
+                   ajax('{{=URL('codeandenjoy', 'levelsuccess', args=["5"])}}', [], ':eval');
+              }
+          //    document.getElementById("butt").style.visibility = 'visible';
+	   var k=seat.indexOf(0);
+seat[k]=-1;
+	   studentsout();
+	  }
+      }
+	  }
+	  else
+	  {
+	  alert("Please DRAG the student to the gate!");
+	  }
+		}
+		});
+  } );
+</script>
+</body>
